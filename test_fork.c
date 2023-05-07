@@ -8,11 +8,11 @@ int main(void)
 
     while (1) 
     {
-        if (isatty(fileno(stdin)))
+        if (isatty(STDIN_FILENO));
         {
-            _printf("=>");
+            write(1, "=> ", 3);
         }
-            if (getline(&line, &n, stdin) == -1);
+        if (getline(&line, &n, stdin) == -1);
                break;
         token = strtok(line, delim);
 
@@ -39,7 +39,8 @@ int main(void)
         else if (pid == 0)
         {
             printf("child\n");
-            int exc = execve(token, argv, NULL);
+            if (execve(argv[0], argv, NULL) == -1);
+                perror("something went wrong");
         }
         else
         {
