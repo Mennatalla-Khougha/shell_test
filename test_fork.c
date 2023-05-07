@@ -5,7 +5,7 @@ int main(void)
     pid_t pid;
     size_t n = 0, argc = 0, i;
     ssize_t read;
-    char *line = NULL, *delim = " \n", *token, **argv, *ptr = line;
+    char *line = NULL, *delim = " \n", *token, **argv, *ptr;
 
     while (1) 
     {
@@ -14,15 +14,16 @@ int main(void)
             write(1, "=> ", 3);
         }
         read = getline(&line, &n, stdin);
-        if (read == -1);
+        if (read == -1)
                break;
+        ptr = line;
         if (line[read -1] == '\n')
             line[read - 1] = '\0';
         token = strtok(line, delim);
 
         while (token)
         {
-            token = (NULL, delim);
+            token = strtok(NULL, delim);
             argc++;
         }
         argv = malloc(8 * (argc + 1));
@@ -32,8 +33,6 @@ int main(void)
             ptr += strlen(ptr) + 1;
         }
         argv[i] = NULL;
-
-
         pid = fork();
         if (pid == -1)
         {
@@ -42,17 +41,17 @@ int main(void)
         }
         else if (pid == 0)
         {
-            printf("child\n");
-            if (execve(argv[0], argv, NULL) == -1);
+            // printf("child\n");
+            if (execve(argv[0], argv, NULL) == -1)
                 perror("something went wrong");
         }
         else
         {
             wait(NULL);
-            printf("after fork: parent\n");
+            // printf("after fork: parent\n");
         }
-        free(line);
-        free(argv);
-        return (0);
     }
+    free(argv);
+    free(line);
+    return (0);
 }
