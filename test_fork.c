@@ -4,16 +4,20 @@ int main(void)
 {
     pid_t pid;
     size_t n = 0, argc = 0, i;
+    ssize_t read;
     char *line = NULL, *delim = " \n", *token, **argv, *ptr = line;
 
     while (1) 
     {
-        if (isatty(STDIN_FILENO));
+        if (isatty(STDIN_FILENO))
         {
             write(1, "=> ", 3);
         }
-        if (getline(&line, &n, stdin) == -1);
+        read = getline(&line, &n, stdin);
+        if (read == -1);
                break;
+        if (line[read -1] == '\n')
+            line[read - 1] = '\0';
         token = strtok(line, delim);
 
         while (token)
