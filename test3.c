@@ -1,11 +1,6 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <stdlib.h>
+#include "main.h"
 
-int main(void)
+int main(int __attribute__ ((unused)) x, char *y[])
 {
     char *line = NULL;
     size_t n = 0;
@@ -20,7 +15,7 @@ int main(void)
     while (1)
     {
 	    if (isatty(STDIN_FILENO))
-            	printf("=> ");
+            	write(1, "=> ", 3);
             read = getline(&line, &n, stdin);
         if (read == -1) {
             break;
@@ -39,11 +34,11 @@ int main(void)
             argv = malloc(8 * (argc + 1));
             for(i=0; i<argc; i++){
                 argv[i] = p;
-                p += strlen(p) + 1;
+                p += _strlen(p) + 1;
             }
             argv[i] = NULL;
             if (execve(argv[0], argv, env) == -1) {
-                printf("error, unknown command.\n");
+                perror(y[0]);
             }
         } else {
             wait(NULL);

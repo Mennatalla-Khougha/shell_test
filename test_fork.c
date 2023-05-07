@@ -41,14 +41,12 @@ int main(void)
         }
         else if (pid == 0)
         {
-            // printf("child\n");
             if (execve(argv[0], argv, NULL) == -1)
                 perror("something went wrong");
         }
         else
         {
             wait(NULL);
-            // printf("after fork: parent\n");
         }
     }
     free(argv);
