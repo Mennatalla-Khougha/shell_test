@@ -1,5 +1,6 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +8,9 @@
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
 #define STRING ((str) ? str : "(null)")
+
 int _printf(const char *format, ...);
 int p_char(char c);
 int p_string(char *s);

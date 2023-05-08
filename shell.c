@@ -1,27 +1,19 @@
 #include "main.h"
 
-int _exceve(char *ptr, int arg_c, char *argv)
+void _exceve(char *ptr, int arg_c, char *argv)
 {
     int i = 0;
     char **arg_v = malloc(sizeof(8 * (arg_c + 1)));
     char *env[] = {NULL};
-    pid_t pid;
 
-    pid = fork();
-    if (pid == 0)
+    for (i = 0; i < arg_c; i++)
     {
-
-        for (i = 0; i < arg_c; i++)
-        {
-            arg_v[i] = ptr;
-            ptr += _strlen(ptr) + 1;
-        }
-        if (execve(arg_v[0], arg_v, env) == -1)
-            perror(argv);
+        arg_v[i] = ptr;
+        ptr += _strlen(ptr) + 1;
     }
-    else
-        wait(NULL);
-    return (0);
+    if (execve(arg_v[0], arg_v, env) == -1)
+        perror(argv);
+    exit(-1);
 }
 
 int main(int __attribute__ ((unused)) argc, char **argv)
@@ -30,6 +22,7 @@ int main(int __attribute__ ((unused)) argc, char **argv)
     ssize_t read;
     char *line = NULL, *ptr, *token;
     int arg_c;
+    pid_t id;
 
     while (1)
     {
@@ -48,22 +41,10 @@ int main(int __attribute__ ((unused)) argc, char **argv)
             token = strtok(NULL, " ");
             arg_c++;
         }
-        _exceve(ptr, arg_c, argv[0]);
-/*     pid = fork();
-    if (pid == 0)
-    {
-        arg_v = malloc(8 * (arg_c + 1));
-        for (i = 0; i < arg_c; i++)
-        {
-            arg_v[i] = ptr;
-            ptr += _strlen(ptr) + 1;
-        }
-        if (execve(arg_v[0], arg_v, env) == -1)
-            perror(argv[0]);
-    }
-    else
+        id = fork();
+        if (!id)
+            _exceve(ptr, arg_c, argv[0]);
         wait(NULL);
-    } */
     }
     return (0);
 }
