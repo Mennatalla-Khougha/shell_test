@@ -1,27 +1,22 @@
 #include "main.h"
+
 int main(int __attribute__ ((unused)) x, char *y[])
 {
-	char *line = NULL;
+	char *line = NULL, *token, *p, **argv, *env[] = {NULL};
 	size_t n = 0;
 	ssize_t read;
-	char *token;
-	char *p;
 	int argc, i;
-	char **argv;
-	char *env[] = {NULL};
 	pid_t id;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-		{
 			write(1, "=> ", 3);
-		}
 		read = getline(&line, &n, stdin);
 		if (read == -1)
-		{
 			break;
-		}
+		if (line[read -1] == '\n')
+			line[read - 1] = '\0';
 		p = line;
 		token = strtok(line, " ");
 		argc = 0;
@@ -41,14 +36,10 @@ int main(int __attribute__ ((unused)) x, char *y[])
 			}
 			argv[i] = NULL;
 			if (execve(argv[0], argv, env) == -1)
-			{
 				perror(y[0]);
-			}
 		}
 		else
-		{
 			wait(NULL);
-		}
 	}
 	return (0);
 }
