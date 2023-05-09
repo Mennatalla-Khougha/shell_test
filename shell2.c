@@ -3,13 +3,14 @@
 void _exceve(char *ptr, int arg_c, char *argv)
 {
     int i = 0;
-    char **arg_v = malloc(8 * (arg_c + 1));
+    char **arg_v; 
     char *env[] = {NULL};
     pid_t id;
-
     id = fork();
+    
     if (!id)
     {
+        arg_v = malloc(8 * (arg_c + 1));
         for (i = 0; i < arg_c; i++)
         {
             arg_v[i] = ptr;
@@ -47,7 +48,7 @@ int main(int __attribute__ ((unused)) argc, char **argv)
             arg_c++;
         }
         _exceve(ptr, arg_c, argv[0]);
+        free(line);
     }
-    free(line);
     return (0);
 }
