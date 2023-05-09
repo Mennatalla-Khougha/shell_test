@@ -24,11 +24,19 @@ void _exceve(char *ptr, int arg_c, char *argv)
     wait(NULL);
 }
 
-int main(int __attribute__ ((unused)) argc, char **argv)
+char *get_path(char **envp)
+{ 
+    for (int i = 0; envp[i] != NULL; i++) {
+        if (strncmp(envp[i], "PATH=", 5) == 0) {
+          return (&envp[i][5]);
+        }
+    }
+}
+int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 {
     size_t n = 0;
     ssize_t read;
-    char *line = NULL, *ptr, *token;
+    char *line = NULL, *ptr, *token, *env = strdup(get_path(envp)), *path_token, buffer[1024];
     int arg_c;
 
     while (1)
@@ -47,6 +55,11 @@ int main(int __attribute__ ((unused)) argc, char **argv)
         {
             token = strtok(NULL, " ");
             arg_c++;
+        }
+        path_token = strtok(env, ":");
+        while (path_token)
+        {
+            
         }
         _exceve(ptr, arg_c, argv[0]);
     }
