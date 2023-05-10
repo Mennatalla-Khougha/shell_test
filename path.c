@@ -1,6 +1,6 @@
 #include "main.h"
 
-void _exceve(char *ptr, int arg_c, char *argv, char *buff)
+void _exceve(char *ptr, int arg_c, char __attribute__ ((unused)) *argv, char *buff)
 {
     int i = 0;
     char **arg_v; 
@@ -24,7 +24,9 @@ void _exceve(char *ptr, int arg_c, char *argv, char *buff)
         }
         arg_v[i] = NULL;
         if (execve(arg_v[0], arg_v, env) == -1)
-            perror(argv);
+        {
+            printf("hello\n");
+        }
         free(arg_v);
         exit(-1);
     }
@@ -47,7 +49,7 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
     size_t n = 0;
     ssize_t read;
     char *line = NULL, *ptr, *token, *env = _strdup(get_path(envp)), *path_token, *path_v;
-    int arg_c, path_c = 0, i;
+    int arg_c, path_c = 0, i, k;
 /*     printf("%s\n", env); */
     path_v = env;
     path_token = strtok(env, ":");
@@ -75,6 +77,21 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
             token = strtok(NULL, " ");
             arg_c++;
         }
+        if(!strcmp(ptr, "exit")){
+            k = 0;
+            if(arg_c > 1){
+                ptr += _strlen(ptr) + 1;
+                k = _atoi(ptr);
+            }
+            if(k != -1){
+                free(line);
+                exit(k);
+            }
+            else{
+                perror(NULL);
+                continue;
+            }
+        }
         if(ptr[0] == '/')
             _exceve(ptr, arg_c, argv[0], NULL);
         else
@@ -98,6 +115,5 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
             }
         }
     }
-    free(line);
     return (0);
 }

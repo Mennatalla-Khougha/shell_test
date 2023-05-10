@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main(int __attribute__ ((unused)) argc, char __attribute__ ((unused))**argv, char **env) 
+/* int main(int __attribute__ ((unused)) argc, char __attribute__ ((unused))**argv, char **env) 
 {
     int i;
 
@@ -9,7 +9,7 @@ int main(int __attribute__ ((unused)) argc, char __attribute__ ((unused))**argv,
         printf("%s\n", env[i]);
     }
     return 0;
-}
+} */
 
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
@@ -50,30 +50,22 @@ int _atoi(char *s)
 {
 	int i = 0;
 	int j;
-	int sign = -1;
 	int n = 0;
+	int power = 1;
 
 
-	while (s[i] != 0)
+	while (s[i])
 		i++;
-
-	for (j = 0; j < i; j++)
+	i--;
+	for (j = 0; j <= i; j++)
 	{
-		if (s[j] == '-')
-			sign *= -1;
-		if (s[j] > 47 && s[j] < 58)
+		if (s[i-j] > 47 && s[i-j] < 58)
 		{
-			if (n < 0)
-				n = (n * 10) - (s[j] - 48);
-			else
-				n = (s[j] - 48) * -1;
-
-			if (s[j + 1] < 48 || s[j + 1] > 57)
-				break;
+			n += (s[i-j] - 48) * power;
+			power *= 10;
 		}
+		else
+			return (-1);
 	}
-	if (sign < 0)
-		n *= -1;
-
 	return (n);
 }

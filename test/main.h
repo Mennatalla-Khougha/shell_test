@@ -8,7 +8,6 @@
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <errno.h>
 
 #define STRING ((str) ? str : "(null)")
 
