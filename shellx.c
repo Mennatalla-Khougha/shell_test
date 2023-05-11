@@ -60,7 +60,7 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
         arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count))
             continue;
-        _command_(ptr, argv[0], env, arg_c, path_c, count);
+        _command_(ptr, argv[0], env, arg_c, path_c, count, envp);
     }
     return (0);
 }

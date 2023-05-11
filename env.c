@@ -1,15 +1,19 @@
 #include "main.h"
 
-/* int main(int __attribute__ ((unused)) argc, char __attribute__ ((unused))**argv, char **env) 
+int _env(char **env, char *ptr) 
 {
     int i;
 
-    for (i = 0; env[i] != NULL; i++) 
-    {
-        printf("%s\n", env[i]);
-    }
+	if (rev_cmp(ptr, "env"))
+	{
+    	for (i = 0; env[i] != NULL; i++) 
+    	{
+        	printf("%s\n", env[i]);
+    	}
+		return (1);
+	}
     return 0;
-} */
+}
 
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
