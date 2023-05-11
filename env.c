@@ -8,7 +8,8 @@ int _env(char **env, char *ptr)
 	{
     	for (i = 0; env[i] != NULL; i++) 
     	{
-        	printf("%s\n", env[i]);
+        	write(1, env[i], _strlen(env[i]));
+			write(1, "\n", 1);
     	}
 		return (1);
 	}
