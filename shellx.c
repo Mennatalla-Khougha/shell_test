@@ -1,8 +1,8 @@
 #include "main.h"
 
-void _exceve(char *ptr, int arg_c, char __attribute__ ((unused)) *argv, char *buff)
+void _exceve(char *ptr, int arg_c, char *buff)
 {
-    int i = 0;
+    int i;
     char **arg_v; 
     char *env[] = {NULL};
     pid_t id;
@@ -11,22 +11,13 @@ void _exceve(char *ptr, int arg_c, char __attribute__ ((unused)) *argv, char *bu
     if (!id)
     {
         arg_v = malloc(8 * (arg_c + 1));
-        if(buff)
-        {
-            arg_v[0] = buff;
-            i++;
-            ptr += _strlen(ptr) + 1;
-        }
-        for (; i < arg_c; i++)
+        for (i = 0; i < arg_c; i++)
         {
             arg_v[i] = ptr;
             ptr += _strlen(ptr) + 1;
         }
         arg_v[i] = NULL;
-        if (execve(arg_v[0], arg_v, env) == -1)
-        {
-            printf("hello\n");
-        }
+        execve(buff, arg_v, env);
         free(arg_v);
         exit(-1);
     }
@@ -49,7 +40,7 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
     size_t n = 0;
     ssize_t read;
     char *line = NULL, *ptr, *token, *env = _strdup(get_path(envp)), *path_token, *path_v;
-    int arg_c, path_c = 0, i, k;
+    int arg_c, path_c = 0, i, count = 0;
 /*     printf("%s\n", env); */
     path_v = env;
     path_token = strtok(env, ":");
@@ -62,6 +53,7 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 
     while (1)
     {
+        count++;
         if (isatty(STDIN_FILENO))
             write(1, "=> ", 3);
         read = getline(&line, &n, stdin);
@@ -77,43 +69,9 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
             token = strtok(NULL, " ");
             arg_c++;
         }
-        if(!strcmp(ptr, "exit")){
-            k = 0;
-            if(arg_c > 1){
-                ptr += _strlen(ptr) + 1;
-                k = _atoi(ptr);
-            }
-            if(k != -1){
-                free(line);
-                exit(k);
-            }
-            else{
-                perror(NULL);
-                continue;
-            }
-        }
-        if(ptr[0] == '/')
-            _exceve(ptr, arg_c, argv[0], NULL);
-        else
-        {
-            for(i = 0; i < path_c; i++)
-            {
-            char buffer[1024] = "";
-            _strcat(buffer, path_v);
-            _strcat(buffer, "/");
-            _strcat(buffer, ptr);
-            if (access(buffer, X_OK) == 0) 
-            {
-                _exceve(ptr, arg_c, argv[0], buffer);
-                break;
-            }
-            path_v += _strlen(path_v) + 1;
-            }
-            path_v = env;
-            if(i == path_c){
-                perror(argv[0]);
-            }
-        }
+        if(_exit_(ptr, line, argv[0], arg_c, count))
+            continue;
+        _command_(ptr, argv[0], path_v, arg_c, path_c, count);
     }
     return (0);
 }

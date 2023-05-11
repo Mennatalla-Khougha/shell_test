@@ -9,7 +9,7 @@
 
 int p_char(char c)
 {
-	return (write(1, &c, 1));
+	return (write(2, &c, 1));
 }
 
 /**
@@ -21,7 +21,7 @@ int p_char(char c)
 
 int p_string(char *s)
 {
-	return (write(1, s, _strlen(s)));
+	return (write(2, s, _strlen(s)));
 }
 
 /**
