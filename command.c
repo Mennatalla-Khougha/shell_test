@@ -31,3 +31,28 @@ void _command_(char *ptr, char *argv, char *path, int argc, int path_c, int coun
         }
     }
 }
+
+char *input(char **line, size_t *n)
+{
+    ssize_t read;
+
+    read = getline(line, n, stdin);
+        if (read == -1)
+            return (0);
+        if ((*line)[read - 1] == '\n')
+            (*line)[read - 1] = '\0';
+    return (*line);
+}
+
+int token(char *line, char *delim)
+{
+    int argc = 0;
+    char *_token = strtok(line, delim);
+
+    while (_token)
+    {
+        _token = strtok(NULL, delim);
+        argc++;
+    }
+    return(argc);
+}

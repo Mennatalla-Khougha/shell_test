@@ -10,13 +10,21 @@ void _exceve(char *ptr, int arg_c, char *buff)
     
     if (!id)
     {
-        arg_v = malloc(8 * (arg_c + 1));
-        for (i = 0; i < arg_c; i++)
-        {
-            arg_v[i] = ptr;
-            ptr += _strlen(ptr) + 1;
+        if(rev_cmp(ptr, "pwd")){
+            arg_v = malloc(16);
+            arg_v[0] = ptr;
+            arg_v[1] = NULL;
         }
-        arg_v[i] = NULL;
+        else
+        {
+            arg_v = malloc(8 * (arg_c + 1));
+            for (i = 0; i < arg_c; i++)
+            {
+                arg_v[i] = ptr;
+                ptr += _strlen(ptr) + 1;
+            }
+            arg_v[i] = NULL;
+        }
         execve(buff, arg_v, env);
         free(arg_v);
         exit(-1);
@@ -38,40 +46,21 @@ char *get_path(char **envp)
 int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 {
     size_t n = 0;
-    ssize_t read;
-    char *line = NULL, *ptr, *token, *env = _strdup(get_path(envp)), *path_token, *path_v;
-    int arg_c, path_c = 0, i, count = 0;
-/*     printf("%s\n", env); */
-    path_v = env;
-    path_token = strtok(env, ":");
-    while (path_token)
-    {
-        path_token = strtok(NULL, ":");
-        path_c++;
-    }
-    env = path_v;
+    char *line = NULL, *ptr, *env = _strdup(get_path(envp));
+    int arg_c, path_c = 0, count = 0;
+
+    path_c = token(env, ":");
 
     while (1)
     {
         count++;
         if (isatty(STDIN_FILENO))
             write(1, "=> ", 3);
-        read = getline(&line, &n, stdin);
-        if (read == -1)
-            return (-1);
-        if (line[read - 1] == '\n')
-            line[read - 1] = '\0';
-        ptr = line;
-        token = strtok(line, " ");
-        arg_c = 0;
-        while (token)
-        {
-            token = strtok(NULL, " ");
-            arg_c++;
-        }
+        ptr = input(&line, &n);
+        arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count))
             continue;
-        _command_(ptr, argv[0], path_v, arg_c, path_c, count);
+        _command_(ptr, argv[0], env, arg_c, path_c, count);
     }
     return (0);
 }

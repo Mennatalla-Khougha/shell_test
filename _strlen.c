@@ -83,3 +83,21 @@ int _strncmp(const char *s1, const char *s2, size_t n)
 	} while (--n != 0);
 	return (0);
 }
+
+int rev_cmp(char *s1, char *s2)
+{
+	int len1, len2, i;
+
+	len1 = _strlen(s1);
+	len2 = _strlen(s2);
+	if(len2 > len1)
+		return (0);
+	len1--;
+	for(i = len2 - 1; i >= 0; i--)
+	{
+		if(s1[len1] != s2[i])
+			return (0);
+		len1--;
+	}
+	return(1);
+}
