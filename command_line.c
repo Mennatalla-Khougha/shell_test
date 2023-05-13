@@ -42,7 +42,7 @@ char *input(char **line, size_t *n)
 
     read = _getline(line, n, 0);
         if (read == -1)
-            return (0);
+            exit(0);
         if ((*line)[read - 1] == '\n')
             (*line)[read - 1] = '\0';
     return (*line);
