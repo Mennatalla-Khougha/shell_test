@@ -74,3 +74,74 @@ int _atoi(char *s)
 	}
 	return (n);
 }
+
+/**
+ * _strspn - gets the length of a prefix substring.
+ * @s: segment.
+ * @accept: bytes.
+ * Return: number of bytes in the initial segment s.
+ */
+
+unsigned int _strspn(char *s, char *accept)
+{
+	unsigned int length = 0;
+	int s_len = 0;
+	int accept_len = 0;
+	int i, j, chr_yes;
+
+	while (s[s_len] != 0)
+		s_len++;
+
+	while (accept[accept_len] != 0)
+		accept_len++;
+
+	for (i = 0; i < s_len; i++)
+	{
+		chr_yes = 0;
+		for (j = 0; j < accept_len; j++)
+		{
+			if (accept[j] == s[i])
+			{
+				chr_yes = 1;
+				length++;
+				break;
+			}
+		}
+		if (chr_yes == 0)
+			break;
+	}
+
+	return (length);
+}
+
+/**
+ * _strpbrk - search a string for any set of bytes.
+ * @s: string to be searched for.
+ * @accept: number of bytes.
+ * Return: pointer to matched bytes in s, or NULL if none found.
+ */
+
+char *_strpbrk(char *s, char *accept)
+{
+	int i, j;
+	int s_len = 0, accept_len = 0;
+
+	while (s[s_len] != 0)
+		s_len++;
+
+	while (accept[accept_len] != 0)
+		accept_len++;
+
+	for (i = 0; i < s_len; i++)
+	{
+		for (j = 0; j < accept_len; j++)
+		{
+			if (accept[j] == s[i])
+			{
+				return (s + i);
+			}
+		}
+	}
+
+	return (NULL);
+}
