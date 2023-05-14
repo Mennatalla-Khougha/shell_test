@@ -1,8 +1,8 @@
 #include "main.h"
 
-int _exceve(char *ptr, int arg_c, char *buff)
+int _exceve(char *ptr, int arg_c, char *buff, int *status)
 {
-    int i, status;
+    int i, pid = (int)getpid();
     char **arg_v; 
     char *env[] = {NULL};
     pid_t id;
@@ -23,14 +23,18 @@ int _exceve(char *ptr, int arg_c, char *buff)
                 arg_v[i] = ptr;
                 ptr += _strlen(ptr) + 1;
             }
+            if(arg_c > 1 && !strcmp(arg_v[0], "echo"))
+            {
+                _echo(&arg_v[1], *status, pid);
+            }
             arg_v[i] = NULL;
         }
         execve(buff, arg_v, env);
         free(arg_v);
         exit(-1);
     }
-    wait(&status);
-    return (WEXITSTATUS(status));
+    wait(status);
+    return (WEXITSTATUS(*status));
 }
 
 char *get_path(char **envp)
@@ -48,7 +52,7 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 {
     size_t n = 0;
     char *line = NULL, *ptr, *env = _strdup(get_path(envp));
-    int arg_c, path_c = 0, count = 0, val;
+    int arg_c, path_c = 0, count = 0, status = 0;
 
     path_c = token(env, ":");
 
@@ -61,9 +65,11 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
         ptr = space(&line);
         arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count))
+        {
+            status = 2;
             continue;
-        val = _command_(ptr, argv[0], env, arg_c, path_c, count, envp);
-        printf("%d\n", val);
+        }
+        status = _command_(ptr, argv[0], env, arg_c, path_c, count, envp, &status);
     }
     return (0);
 }

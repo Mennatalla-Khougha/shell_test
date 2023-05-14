@@ -27,11 +27,12 @@ int _strlen(char *s);
 char *_strcat(char *dest, char *src);
 char *_strdup(char *str);
 int _strncmp(const char *s1, const char *s2, size_t n);
-int _exceve(char *ptr, int arg_c, char *buff);
+int _exceve(char *ptr, int arg_c, char *buff, int *status);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int _atoi(char *s);
 int _exit_(char *ptr, char *line, char *argv, int argc, int count);
-int _command_(char *ptr, char *argv, char *path, int argc, int path_c, int count, char **envp);
+int _command_(char *ptr, char *argv, char *path, int argc,
+int path_c, int count, char **envp, int *status);
 int input(char **line, size_t *n);
 int token(char *line, char *delim);
 int rev_cmp(char *s1, char *s2);
@@ -40,5 +41,7 @@ ssize_t _getline(char **line, size_t *n, int stream);
 unsigned int _strspn(char *s, char *accept); 
 char *space(char **line);
 char *_strtok(char *str, const char *delim);
+void tostring(char *str, int num);
+void _echo(char **ptr, int val, int pid);
 
 #endif

@@ -1,6 +1,7 @@
 #include "main.h"
 
-int _command_(char *ptr, char *argv, char *path, int argc, int path_c, int count, char **envp)
+int _command_(char *ptr, char *argv, char *path, int argc,
+int path_c, int count, char **envp, int *status)
 {
     int i;
 
@@ -9,10 +10,10 @@ int _command_(char *ptr, char *argv, char *path, int argc, int path_c, int count
         if (access(ptr, X_OK) == 0)
         {
             if (!_env(envp, ptr))
-                return (_exceve(ptr, argc, ptr));
+                return (_exceve(ptr, argc, ptr, status));
+            return (0);
         }
-        else
-            _printf("%s: %i: %s: not found\n", argv, count, ptr);
+        _printf("%s: %i: %s: not found\n", argv, count, ptr);
     }
     else
     {
@@ -25,16 +26,14 @@ int _command_(char *ptr, char *argv, char *path, int argc, int path_c, int count
             if (access(buffer, X_OK) == 0) 
             {
                 if (!_env(envp, ptr))
-                    return (_exceve(ptr, argc, buffer));
-                break;
+                    return (_exceve(ptr, argc, buffer, status));
+                return (0);
             }
             path += _strlen(path) + 1;
         }
-        if(i == path_c){
-            _printf("%s: %i: %s: not found\n", argv, count, ptr);
-        }
+        _printf("%s: %i: %s: not found\n", argv, count, ptr);
     }
-    return(0);
+    return (127);
 }
 
 int input(char **line, size_t *n)
