@@ -56,7 +56,8 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
         count++;
         if (isatty(STDIN_FILENO))
             write(1, "=> ", 3);
-        ptr = input(&line, &n);
+        input(&line, &n);
+        ptr = space(&line);
         arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count))
             continue;
