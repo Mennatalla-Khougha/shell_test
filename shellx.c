@@ -1,8 +1,8 @@
 #include "main.h"
 
-void _exceve(char *ptr, int arg_c, char *buff)
+int _exceve(char *ptr, int arg_c, char *buff)
 {
-    int i;
+    int i, status;
     char **arg_v; 
     char *env[] = {NULL};
     pid_t id;
@@ -29,7 +29,8 @@ void _exceve(char *ptr, int arg_c, char *buff)
         free(arg_v);
         exit(-1);
     }
-    wait(NULL);
+    wait(&status);
+    return (WEXITSTATUS(status));
 }
 
 char *get_path(char **envp)
@@ -47,21 +48,22 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 {
     size_t n = 0;
     char *line = NULL, *ptr, *env = _strdup(get_path(envp));
-    int arg_c, path_c = 0, count = 0, arrow = 1;
+    int arg_c, path_c = 0, count = 0, val;
 
     path_c = token(env, ":");
 
     while (1)
     {
         count++;
-        if (isatty(STDIN_FILENO) && arrow)
+        if (isatty(STDIN_FILENO))
             write(1, "=> ", 3);
-        arrow = input(&line, &n);
+        input(&line, &n);
         ptr = space(&line);
         arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count))
             continue;
-        _command_(ptr, argv[0], env, arg_c, path_c, count, envp);
+        val = _command_(ptr, argv[0], env, arg_c, path_c, count, envp);
+        printf("%d\n", val);
     }
     return (0);
 }

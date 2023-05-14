@@ -1,6 +1,6 @@
 #include "main.h"
 
-void _command_(char *ptr, char *argv, char *path, int argc, int path_c, int count, char **envp)
+int _command_(char *ptr, char *argv, char *path, int argc, int path_c, int count, char **envp)
 {
     int i;
 
@@ -9,7 +9,7 @@ void _command_(char *ptr, char *argv, char *path, int argc, int path_c, int coun
         if (access(ptr, X_OK) == 0)
         {
             if (!_env(envp, ptr))
-                _exceve(ptr, argc, ptr);
+                return (_exceve(ptr, argc, ptr));
         }
         else
             _printf("%s: %i: %s: not found\n", argv, count, ptr);
@@ -25,7 +25,7 @@ void _command_(char *ptr, char *argv, char *path, int argc, int path_c, int coun
             if (access(buffer, X_OK) == 0) 
             {
                 if (!_env(envp, ptr))
-                    _exceve(ptr, argc, buffer);
+                    return (_exceve(ptr, argc, buffer));
                 break;
             }
             path += _strlen(path) + 1;
@@ -34,6 +34,7 @@ void _command_(char *ptr, char *argv, char *path, int argc, int path_c, int coun
             _printf("%s: %i: %s: not found\n", argv, count, ptr);
         }
     }
+    return(0);
 }
 
 int input(char **line, size_t *n)
@@ -56,11 +57,11 @@ int input(char **line, size_t *n)
 int token(char *line, char *delim)
 {
     int argc = 0;
-    char *_token = strtok(line, delim);
+    char *_token = _strtok(line, delim);
 
     while (_token)
     {
-        _token = strtok(NULL, delim);
+        _token = _strtok(NULL, delim);
         argc++;
     }
     return(argc);
