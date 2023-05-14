@@ -48,6 +48,7 @@ char *get_path(char **envp)
     }
     return (&envp[i][5]);
 }
+
 int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 {
     size_t n = 0;
