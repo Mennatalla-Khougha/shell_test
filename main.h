@@ -32,7 +32,7 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int _atoi(char *s);
 int _exit_(char *ptr, char *line, char *argv, int argc, int count);
 void _command_(char *ptr, char *argv, char *path, int argc, int path_c, int count, char **envp);
-void input(char **line, size_t *n);
+int input(char **line, size_t *n);
 int token(char *line, char *delim);
 int rev_cmp(char *s1, char *s2);
 int _env(char **env, char *ptr);

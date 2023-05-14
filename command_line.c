@@ -36,7 +36,7 @@ void _command_(char *ptr, char *argv, char *path, int argc, int path_c, int coun
     }
 }
 
-void input(char **line, size_t *n)
+int input(char **line, size_t *n)
 {
     ssize_t read;
 
@@ -45,6 +45,12 @@ void input(char **line, size_t *n)
             exit(0);
         if ((*line)[read - 1] == '\n')
             (*line)[read - 1] = '\0';
+        if ((*line)[read - 1] == ';')
+        {
+            (*line)[read - 1] = '\0';
+            return (0);
+        }
+        return (1);
 }
 
 int token(char *line, char *delim)

@@ -47,16 +47,16 @@ int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 {
     size_t n = 0;
     char *line = NULL, *ptr, *env = _strdup(get_path(envp));
-    int arg_c, path_c = 0, count = 0;
+    int arg_c, path_c = 0, count = 0, arrow = 1;
 
     path_c = token(env, ":");
 
     while (1)
     {
         count++;
-        if (isatty(STDIN_FILENO))
+        if (isatty(STDIN_FILENO) && arrow)
             write(1, "=> ", 3);
-        input(&line, &n);
+        arrow = input(&line, &n);
         ptr = space(&line);
         arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count))
