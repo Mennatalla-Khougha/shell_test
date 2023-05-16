@@ -36,6 +36,7 @@ void handle_dollar(char *ptr, char **s, int val, int pid, char **envp)
         tostring(num, pid);
         strcat(ptr, num);
         (*s)++;
+        free(num);
     }
     else if ((*s)[0] == '?')
     {
@@ -43,6 +44,7 @@ void handle_dollar(char *ptr, char **s, int val, int pid, char **envp)
         tostring(num, val);
         strcat(ptr, num);
         (*s)++;
+        free(num);
     }
     else{
         while((*s)[n] && (*s)[n] != ' ')

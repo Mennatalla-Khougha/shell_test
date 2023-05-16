@@ -1,6 +1,6 @@
 #include "main.h"
 
-int _exit_(char *ptr, char *line, char *argv, int argc, int count, char *env)
+int _exit_(char *ptr, char *line, char *argv, int argc, int count)
 {
     int k = 0;
 
@@ -10,7 +10,6 @@ int _exit_(char *ptr, char *line, char *argv, int argc, int count, char *env)
             k = _atoi(ptr);
         }
         if(k != -1){
-            free(env);
             free(line);
             exit(k);
         }
