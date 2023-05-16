@@ -33,20 +33,29 @@ int _exceve(char *ptr, int arg_c, char *buff, int *status)
     return (WEXITSTATUS(*status));
 }
 
-int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
     size_t n = 0;
     char *line = NULL, *ptr, *env = _strdup(_get_env(envp, "PATH", 4));
     int arg_c, path_c = 0, count = 0, status = 0, arrow = 1, pid = (int)getpid();
+    int file = 0;
+    if(argc > 1)
+    {
+        file = open(argv[1], O_RDONLY);
+        if (file == -1) {
+        _printf("%s: 0: cannot open %s: No such file\n", argv[0], argv[1]);
+        exit(2);
+        }
+    }
 
     path_c = token(env, ":");
 
     while (1)
     {
         count++;
-        if (isatty(STDIN_FILENO) && arrow)
+        if (isatty(STDIN_FILENO) && arrow && !file)
             write(1, "=> ", 3);
-        arrow = input(&line, &n);
+        arrow = input(&line, &n, file);
         ptr = handle_input(&line, status, pid, envp);
         arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count, env))

@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <fcntl.h>
 
 #define STRING ((str) ? str : "(null)")
 
@@ -33,7 +34,7 @@ int _atoi(char *s);
 int _exit_(char *ptr, char *line, char *argv, int argc, int count, char *env);
 int _command_(char *ptr, char *argv, char *path, int argc,
 int path_c, int count, char **envp, int *status);
-int input(char **line, size_t *n);
+int input(char **line, size_t *n, int file);
 int token(char *line, char *delim);
 int rev_cmp(char *s1, char *s2);
 int _env(char **env, char *ptr);

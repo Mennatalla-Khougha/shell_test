@@ -36,13 +36,16 @@ int path_c, int count, char **envp, int *status)
     return (127);
 }
 
-int input(char **line, size_t *n)
+int input(char **line, size_t *n, int file)
 {
     ssize_t read;
 
-    read = _getline(line, n, 0);
+    read = _getline(line, n, file);
         if (read == -1)
+        {
+            close(file);
             exit(0);
+        }
         if ((*line)[read - 1] == '\n')
             (*line)[read - 1] = '\0';
         if ((*line)[read - 1] == ';')
