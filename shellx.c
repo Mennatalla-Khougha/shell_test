@@ -1,6 +1,6 @@
 #include "main.h"
 
-int _exceve(char *ptr, int arg_c, char *buff, int *status)
+int _exceve(char *ptr, int arg_c, char *buff, int *status, char **envp)
 {
     int i, pid = (int)getpid();
     char **arg_v; 
@@ -25,7 +25,7 @@ int _exceve(char *ptr, int arg_c, char *buff, int *status)
             }
             if(arg_c > 1 && !strcmp(arg_v[0], "echo"))
             {
-                _echo(&arg_v[1], *status, pid);
+                _echo(&arg_v[1], *status, pid, envp);
             }
             arg_v[i] = NULL;
         }
