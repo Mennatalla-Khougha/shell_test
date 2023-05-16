@@ -5,6 +5,11 @@ char *handle_input(char **line, int val, int pid, char **envp)
     char *ptr = malloc(1024);
     char *dollar;
     char *start;
+    char *hash = strchr(*line, '#');
+
+    if(hash && ((hash != *line && *(hash - 1) == ' ') || hash == *line))
+        *hash = '\0';
+
 
     dollar = strchr(*line, '$');
     start = *line;
@@ -47,7 +52,7 @@ void handle_dollar(char *ptr, char **s, int val, int pid, char **envp)
         free(num);
     }
     else{
-        while((*s)[n] && (*s)[n] != ' ')
+        while((*s)[n] && (*s)[n] != ' ' && (*s)[n] != '#')
             n++;
         if(!n)
             strcat(ptr, "$");
