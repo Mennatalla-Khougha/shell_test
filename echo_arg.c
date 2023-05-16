@@ -1,6 +1,6 @@
 #include "main.h"
 
-void _echo(char **ptr, int val, int pid, char **envp)
+/* void _echo(char **ptr, int val, int pid, char **envp)
 {
     char *num;
     char *str = _strdup(*ptr);
@@ -29,7 +29,7 @@ void _echo(char **ptr, int val, int pid, char **envp)
             *ptr = "\0";
         }
     }   
-}
+} */
 
 
 
@@ -57,9 +57,9 @@ void tostring(char *str, int num)
     str[len] = '\0';
 }
 
-char *_get_env(char **envp, char *env)
+char *_get_env(char **envp, char *env, int len)
 {
-    int i, len = _strlen(env);
+    int i;
 
     for (i = 0; envp[i] != NULL; i++) {
         if (_strncmp(envp[i], env, len) == 0) {

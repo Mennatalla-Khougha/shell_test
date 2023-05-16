@@ -1,8 +1,8 @@
 #include "main.h"
 
-int _exceve(char *ptr, int arg_c, char *buff, int *status, char **envp)
+int _exceve(char *ptr, int arg_c, char *buff, int *status)
 {
-    int i, pid = (int)getpid();
+    int i;
     char **arg_v; 
     char *env[] = {NULL};
     pid_t id;
@@ -23,10 +23,6 @@ int _exceve(char *ptr, int arg_c, char *buff, int *status, char **envp)
                 arg_v[i] = ptr;
                 ptr += _strlen(ptr) + 1;
             }
-            if(arg_c > 1 && !strcmp(arg_v[0], "echo"))
-            {
-                _echo(&arg_v[1], *status, pid, envp);
-            }
             arg_v[i] = NULL;
         }
         execve(buff, arg_v, env);
@@ -37,33 +33,21 @@ int _exceve(char *ptr, int arg_c, char *buff, int *status, char **envp)
     return (WEXITSTATUS(*status));
 }
 
-char *get_path(char **envp)
-{
-    int i;
-
-    for (i = 0; envp[i] != NULL; i++) {
-        if (_strncmp(envp[i], "PATH=", 5) == 0) {
-          break;
-        }
-    }
-    return (&envp[i][5]);
-}
-
 int main(int __attribute__ ((unused)) argc, char **argv, char **envp)
 {
     size_t n = 0;
-    char *line = NULL, *ptr, *env = _strdup(get_path(envp));
-    int arg_c, path_c = 0, count = 0, status = 0;
+    char *line = NULL, *ptr, *env = _strdup(_get_env(envp, "PATH", 4));
+    int arg_c, path_c = 0, count = 0, status = 0, arrow = 1, pid = (int)getpid();
 
     path_c = token(env, ":");
 
     while (1)
     {
         count++;
-        if (isatty(STDIN_FILENO))
+        if (isatty(STDIN_FILENO) && arrow)
             write(1, "=> ", 3);
-        input(&line, &n);
-        ptr = space(&line);
+        arrow = input(&line, &n);
+        ptr = handle_input(&line, status, pid, envp);
         arg_c = token(line, " ");
         if(_exit_(ptr, line, argv[0], arg_c, count))
         {

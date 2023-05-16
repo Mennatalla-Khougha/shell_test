@@ -29,13 +29,11 @@ ssize_t _getline(char **line, size_t *n, int stream)
             buffer_size += 8;
         }
     }
-    if (read_line < 0)
+    if (read_line < 0 || (!read_line && !i))
     {
         free (buffer);
         return (-1);
     }
-    if (!read_line && !i)
-        return(-1);
     if(read_line != 8)
         buffer[i] = '\0';
     *line = buffer;

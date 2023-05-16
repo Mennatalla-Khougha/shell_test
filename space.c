@@ -1,10 +1,10 @@
 #include "main.h"
 
-char *space(char **line)
+void space(char **line)
 {
     int i = 0, j = 0;
     char *ptr = malloc(_strlen(*line));
-    while((*line)[i] == ' ' && (*line)[i])
+    while((*line)[i] && (*line)[i] == ' ')
         i++;
     while((*line)[i])
     {
@@ -16,12 +16,16 @@ char *space(char **line)
             while((*line)[i] == ' ')
                 i++;
         }
-        ptr[j] = (*line)[i];
-        i++;
-        j++;
+        else
+        {
+            ptr[j] = (*line)[i];
+            i++;
+            j++;
+        }
     }
+    if(ptr[j-1] == ' ')
+        j--;
     ptr[j] = '\0';
     free(*line);
     *line = ptr;
-    return (ptr);
 }

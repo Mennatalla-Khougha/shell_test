@@ -10,7 +10,7 @@ int path_c, int count, char **envp, int *status)
         if (access(ptr, X_OK) == 0)
         {
             if (!_env(envp, ptr))
-                return (_exceve(ptr, argc, ptr, status, envp));
+                return (_exceve(ptr, argc, ptr, status));
             return (0);
         }
         _printf("%s: %i: %s: not found\n", argv, count, ptr);
@@ -26,7 +26,7 @@ int path_c, int count, char **envp, int *status)
             if (access(buffer, X_OK) == 0) 
             {
                 if (!_env(envp, ptr))
-                    return (_exceve(ptr, argc, buffer, status, envp));
+                    return (_exceve(ptr, argc, buffer, status));
                 return (0);
             }
             path += _strlen(path) + 1;
