@@ -1,6 +1,6 @@
 #include "main.h"
 
-char *handle_input(char **line, int val, int pid, char **envp)
+void handle_input(char **line, int val, int pid, char **envp)
 {
     char *ptr = malloc(1024);
     char *dollar;
@@ -25,7 +25,6 @@ char *handle_input(char **line, int val, int pid, char **envp)
     space(&ptr);
     free(*line);
     *line = ptr;
-    return (ptr);
 }
 
 void handle_dollar(char *ptr, char **s, int val, int pid, char **envp)

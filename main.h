@@ -31,7 +31,7 @@ int _strncmp(const char *s1, const char *s2, size_t n);
 int _exceve(char *ptr, int arg_c, char *buff, int *status);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int _atoi(char *s);
-int _exit_(char *ptr, char *line, char *argv, int argc, int count, char *env);
+int _exit_(char *line, char *argv, int argc, int count, char *env, int k);
 int _command_(char *ptr, char *argv, char *path, int argc,
 int path_c, int count, char **envp, int *status);
 int input(char **line, size_t *n, int file);
@@ -43,10 +43,9 @@ unsigned int _strspn(char *s, char *accept);
 void space(char **line);
 char *_strtok(char *str, const char *delim);
 void tostring(char *str, int num);
-/* void _echo(char **ptr, int val, int pid, char **envp); */
 char *_get_env(char **envp, char *env, int len);
 char *_strchr(char *s, char c);
-char *handle_input(char **line, int val, int pid, char **envp);
+void handle_input(char **line, int val, int pid, char **envp);
 void handle_dollar(char *ptr, char **s, int val, int pid, char **envp);
 
 #endif

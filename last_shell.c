@@ -36,7 +36,7 @@ int _exceve(char *ptr, int arg_c, char *buff, int *status)
 int main(int argc, char **argv, char **envp)
 {
     size_t n = 0;
-    char *line = NULL, *ptr, *env = _strdup(_get_env(envp, "PATH", 4));
+    char *line = NULL, *env = _strdup(_get_env(envp, "PATH", 4));
     int arg_c, path_c = 0, count = 0, status = 0, arrow = 1, pid = (int)getpid();
     int file = 0;
     if(argc > 1)
@@ -56,14 +56,14 @@ int main(int argc, char **argv, char **envp)
         if (isatty(STDIN_FILENO) && arrow && !file)
             write(1, "=> ", 3);
         arrow = input(&line, &n, file);
-        ptr = handle_input(&line, status, pid, envp);
+        handle_input(&line, status, pid, envp);
         arg_c = token(line, " ");
-        if(_exit_(ptr, line, argv[0], arg_c, count, env))
+        if(_exit_(line, argv[0], arg_c, count, env, status))
         {
             status = 2;
             continue;
         }
-        status = _command_(ptr, argv[0], env, arg_c, path_c, count, envp, &status);
+        status = _command_(line, argv[0], env, arg_c, path_c, count, envp, &status);
     }
     return (0);
 }

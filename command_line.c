@@ -1,19 +1,19 @@
 #include "main.h"
 
-int _command_(char *ptr, char *argv, char *path, int argc,
+int _command_(char *line, char *argv, char *path, int argc,
 int path_c, int count, char **envp, int *status)
 {
     int i;
 
-    if(ptr[0] == '/')
+    if(line[0] == '/')
     {
-        if (access(ptr, X_OK) == 0)
+        if (access(line, X_OK) == 0)
         {
-            if (!_env(envp, ptr))
-                return (_exceve(ptr, argc, ptr, status));
+            if (!_env(envp, line))
+                return (_exceve(line, argc, line, status));
             return (0);
         }
-        _printf("%s: %i: %s: not found\n", argv, count, ptr);
+        _printf("%s: %i: %s: not found\n", argv, count, line);
     }
     else
     {
@@ -22,16 +22,16 @@ int path_c, int count, char **envp, int *status)
             char buffer[1024] = "";
             _strcat(buffer, path);
             _strcat(buffer, "/");
-            _strcat(buffer, ptr);
+            _strcat(buffer, line);
             if (access(buffer, X_OK) == 0) 
             {
-                if (!_env(envp, ptr))
-                    return (_exceve(ptr, argc, buffer, status));
+                if (!_env(envp, line))
+                    return (_exceve(line, argc, buffer, status));
                 return (0);
             }
             path += _strlen(path) + 1;
         }
-        _printf("%s: %i: %s: not found\n", argv, count, ptr);
+        _printf("%s: %i: %s: not found\n", argv, count, line);
     }
     return (127);
 }
