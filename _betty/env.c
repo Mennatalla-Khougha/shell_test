@@ -98,3 +98,18 @@ int _env(char **envp, char *line)
 	}
 	return (0);
 }
+
+char *handle_realloc(char *buffer, int *buffer_size, int extra, int max)
+{
+	if (*buffer_size <= max)
+	{
+		buffer = _realloc(buffer, *buffer_size, *buffer_size + extra);
+			if (buffer == NULL)
+			{
+				free(buffer);
+				exit(-1);
+			}
+		*buffer_size += extra;
+	}
+	return (buffer);
+}

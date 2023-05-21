@@ -50,4 +50,5 @@ void space(char **line);
 char *_get_env(char **envp, char *env, int len);
 void handle_input(char **line, int val, int pid, char **envp);
 void handle_dollar(char *ptr, char **s, int val, int pid, char **envp);
+char *handle_realloc(char *buffer, int *buffer_size, int extra, int max);
 #endif

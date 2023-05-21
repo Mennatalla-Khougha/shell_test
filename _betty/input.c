@@ -40,9 +40,10 @@ int input(char **line, size_t *n, int file)
 
 ssize_t _getline(char **line, size_t *n, int stream)
 {
-	size_t buffer_size = 8, i = 0;
+	size_t i = 0;
 	ssize_t read_line;
 	char *buffer;
+	int buffer_size = 8;
 
 	if (line == NULL || n == NULL)
 		return (-1);
@@ -56,16 +57,7 @@ ssize_t _getline(char **line, size_t *n, int stream)
 		i++;
 		if (buffer[i - 1] == '\n' || buffer[i - 1] == ';')
 			break;
-		if (i >= buffer_size)
-		{
-			buffer = _realloc(buffer, buffer_size, buffer_size + 8);
-			if (buffer == NULL)
-			{
-				free(buffer);
-				return (-1);
-			}
-			buffer_size += 8;
-		}
+		buffer = handle_realloc(buffer, &buffer_size, 8, i);
 	}
 	if (read_line < 0 || (!read_line && !i))
 	{
@@ -75,7 +67,7 @@ ssize_t _getline(char **line, size_t *n, int stream)
 	if (read_line != 8)
 		buffer[i] = '\0';
 	*line = buffer;
-	*n = buffer_size;
+	*n = (size_t)buffer_size;
 	return (i);
 }
 
@@ -90,10 +82,11 @@ ssize_t _getline(char **line, size_t *n, int stream)
 void handle_input(char **line, int status, int pid, char **envp)
 {
 	char *buffer, *dollar, *start, *hash = _strchr(*line, '#');
+	int buffer_size = 1024;
 
 	if (hash && ((hash != *line && *(hash - 1) == ' ') || hash == *line))
 		*hash = '\0';
-	buffer = malloc(1024);
+	buffer = malloc(buffer_size);
 	if (buffer == NULL)
 		return;
 	dollar = _strchr(*line, '$');
@@ -101,11 +94,13 @@ void handle_input(char **line, int status, int pid, char **envp)
 	buffer[0] = '\0';
 	while (dollar)
 	{
+		buffer = handle_realloc(buffer, &buffer_size, 1024, _strlen(buffer) + dollar - start);
 		_strncat(buffer, start, dollar - start);
 		handle_dollar(buffer, &dollar, status, pid, envp);
 		start = dollar;
 		dollar = _strchr(start, '$');
 	}
+	buffer = handle_realloc(buffer, &buffer_size, 128, _strlen(buffer) + _strlen(start));
 	_strcat(buffer, start);
 	space(&buffer);
 	free(*line);
@@ -129,7 +124,7 @@ void handle_dollar(char *buffer, char **dollar, int status, int pid,
 	(*dollar)++;
 	if ((*dollar)[0] == '$' || (*dollar)[0] == '?')
 	{
-		num = malloc(8);
+		num = malloc(10);
 		if (num == NULL)
 			return;
 		if ((*dollar)[0] == '$')
