@@ -47,7 +47,7 @@ char *_strcat(char *dest, char *src)
 /**
  * _strdup - return a pointer to space contain a copy of the string given
  * @str: string given.
- * Return: a pointer to a dupicate string.
+ * Return: a pointer to a duplicate string.
  */
 
 char *_strdup(char *str)

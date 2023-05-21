@@ -90,6 +90,8 @@ int _exceve(para *args, char *buff)
 			arg_v[i] = NULL;
 		}
 		execve(buff, arg_v, env);
+		free(arg_v);
+		exit(args->status);
 	}
 	wait(&(args->status));
 	args->status = WEXITSTATUS(args->status);
