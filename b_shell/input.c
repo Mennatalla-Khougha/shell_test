@@ -1,5 +1,6 @@
 #include "main.h"
 
+#define D(i) (*d)[i]
 /**
 * input - determine if we start new line in the shell with an arrow.
 * @args: parameter of type para
@@ -115,9 +116,9 @@ void handle_dollar(char *buffer, char **d, para *args)
 	int i = 0;
 
 	(*d)++;
-	if ((*d)[0] == '$' || (*d)[0] == '?')
+	if (D(0) == '$' || D(0) == '?')
 	{
-		if ((*d)[0] == '$')
+		if (D(0) == '$')
 			tostring(num, args->pid);
 		else
 			tostring(num, args->status);
@@ -126,7 +127,7 @@ void handle_dollar(char *buffer, char **d, para *args)
 	}
 	else
 	{
-		while ((*d)[i] && (*d)[i] != ' ' && (*d)[i] != '#' && (*d)[i] != '$' && (*d)[i] != '/')
+		while (D(i) && D(i) != ' ' && D(i) != '#' && D(i) != '$' && D(i) != '/')
 			i++;
 		if (!i)
 			_strcat(buffer, "$");

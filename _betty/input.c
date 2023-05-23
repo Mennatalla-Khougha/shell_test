@@ -137,7 +137,7 @@ void handle_dollar(char *buffer, char **dollar, int status, int pid,
 	}
 	else
 	{
-		while ((*dollar)[i] && (*dollar)[i] != ' ' && (*dollar)[i] != '#')
+		while ((*dollar)[i] && (*dollar)[i] != ' ' && (*dollar)[i] != '#' && (*dollar)[i] != '$')
 			i++;
 		if (!i)
 			_strcat(buffer, "$");

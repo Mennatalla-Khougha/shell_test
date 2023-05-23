@@ -1,26 +1,6 @@
 #include "main.h"
 
 /**
- * h_address - handle printing the address.
- * @p: the address
- *
- * Return: the len.
- */
-
-int h_address(unsigned long p)
-{
-	int len = 0;
-
-	if (!p)
-		return (p_string("(nil)"));
-	len += p_char('0');
-	len += p_char('x');
-	len += p_address(p, 0);
-	return (len);
-}
-
-
-/**
  * _printf - print.
  * @format: the format
  *

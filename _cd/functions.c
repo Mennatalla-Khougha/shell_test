@@ -90,20 +90,8 @@ int specifier(char c, va_list args)
 	}
 	else if (c == 'i' || c == 'd')
 		len += num_len(va_arg(args, int));
-	else if (c == 'b')
-		len += p_base(va_arg(args, unsigned int), 2, 55, 0);
-	else if (c == 'o')
-		len += p_base(va_arg(args, unsigned int), 8, 55, 0);
-	else if (c == 'x')
-		len += p_base(va_arg(args, unsigned int), 16, 87, 0);
-	else if (c == 'X')
-		len += p_base(va_arg(args, unsigned int), 16, 55, 0);
-	else if (c == 'u')
-		len += num_u_len(va_arg(args, unsigned int));
 	else if (c == '%')
 		len += p_char('%');
-	else if (c == 'p')
-		len += h_address(va_arg(args, unsigned long));
 	else
 	{
 		len += p_char('%');
