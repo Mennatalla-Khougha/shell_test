@@ -42,12 +42,12 @@ char *_strtok(char *str, const char *delim)
 char *_strdup(char *str)
 {
 	char *copy;
-	int i;
+	int i, len = _strlen(str);
 
-	copy = malloc(_strlen(str) + 1);
+	copy = malloc(len + 1);
 	if (!copy)
 		return (NULL);
-	for (i = 0; i < _strlen(str); i++)
+	for (i = 0; i < len; i++)
 	{
 		copy[i] = str[i];
 	}
@@ -81,9 +81,9 @@ int _strncmp(const char *str1, const char *str2, size_t n)
  */
 char *_strchr(char *str, char c)
 {
-	int i = 0;
+	int i = 0, len = _strlen(str);
 
-	while (i < _strlen(str))
+	while (i < len)
 	{
 		if (str[i] == c)
 		{
