@@ -9,14 +9,14 @@ int cd(para *args)
 {
 	char *dest, *line = args->line;
 
-	if (!strcmp(line, "cd"))
+	if (!_strcmp(line, "cd"))
 	{
 		if (args->n_token == 1)
 			dest = _get_env(args->envp, "HOME", 4);
 		else
 		{
 			line += 3;
-			if (!strcmp(line, "-"))
+			if (!_strcmp(line, "-"))
 			{
 				dest = args->old_pwd;
 				write(1, dest, _strlen(dest));

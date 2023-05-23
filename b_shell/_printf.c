@@ -22,7 +22,7 @@ int _printf(const char *format, ...)
 			len += p_char(format[i]);
 			continue;
 		}
-		if (i++ == strlen(format) - 1)
+		if ((int)i++ == _strlen((char *)format) - 1)
 			return (-1);
 		len += specifier(format[i], args);
 	}

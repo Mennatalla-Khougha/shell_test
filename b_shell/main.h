@@ -3,12 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <errno.h>
 #include <fcntl.h>
 
 #define STRING ((str) ? str : "(null)")
@@ -69,7 +67,6 @@ int token(char *line, char *delim);
 int rev_cmp(char *s1, char *s2);
 int _env(para *args);
 ssize_t _getline(para *args);
-unsigned int _strspn(char *s, char *accept);
 void space(char **line, para *args);
 char *_get_env(char **envp, char *env, int len);
 void handle_input(para *args);

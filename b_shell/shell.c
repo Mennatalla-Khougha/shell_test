@@ -96,7 +96,7 @@ int _exit_(para *args)
 {
 int len;
 
-if (!strcmp(args->line, "exit"))
+if (!_strcmp(args->line, "exit"))
 {
 	if (args->n_token > 1)
 	{
