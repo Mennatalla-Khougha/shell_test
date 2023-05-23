@@ -105,10 +105,10 @@ int _env(para *args)
 /**
  * handle_realloc - handle realloc and free args in case it fail.
  * @args: parameter of type args.
- * @buffer: buffer to be reallocted
+ * @buffer: buffer to be reallocated
  * @buffer_size: the buffer size.
  * @extra: the size to be added.
- * @max: the number to comapre the buffer size with
+ * @max: the number to compare the buffer size with
  * Return: the buffer
  */
 char *handle_realloc(para *args, char *buffer, int *buffer_size,

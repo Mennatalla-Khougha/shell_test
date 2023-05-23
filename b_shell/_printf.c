@@ -29,3 +29,20 @@ int _printf(const char *format, ...)
 	va_end(args);
 	return (len);
 }
+
+/* char **get_PWD(para *args)
+{
+	int i;
+	char *pwd;
+
+	for (i = 0; args->envp[i] != NULL; i++)
+	{
+		if (_strncmp(args->envp[i], "PWD", 3) == 0)
+		{
+			pwd = _strdup(args->envp[i]);
+			args->envp[i] = pwd;
+			return (&(args->envp[i]));
+		}
+	}
+	return (NULL);
+} */

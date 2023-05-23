@@ -149,14 +149,12 @@ int main(int argc, char **argv, char **envp)
 {
 	para args;
 	int  arrow = 1;
-	char *path = _get_env(envp, "PATH", 4), *old_pwd;
 
 	args.line = NULL;
 	args.envp = envp;
-	args.path = _strdup(path);
+	args.path = _strdup(_get_env(envp, "PATH", 4));
 	args.pwd = get_PWD(&args);
-	old_pwd = &((*args.pwd)[4]);
-	args.old_pwd = _strdup(old_pwd);
+	args.old_pwd = _strdup(&((*args.pwd)[4]));
 	args.shell_name = argv[0];
 	args.count = 0;
 	args.status = 0;
