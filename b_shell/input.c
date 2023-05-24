@@ -149,12 +149,12 @@ void handle_dollar(char *buffer, char **d, para *args)
 void space(char **line, para *args)
 {
 	int i = 0, j = 0;
-	char *buffer = malloc(_strlen(*line));
+	char *buffer = malloc(_strlen(*line) + 1);
 
 	if (buffer == NULL)
 	{
-		free(line);
 		free_exit(args);
+		free(line);
 	}
 	while ((*line)[i] && (*line)[i] == ' ')
 		i++;
