@@ -29,15 +29,3 @@ int _printf(const char *format, ...)
 	va_end(args);
 	return (len);
 }
-
-char *get_path(char **envp)
-{
-    int i;
-
-    for (i = 0; envp[i] != NULL; i++) {
-        if (_strncmp(envp[i], "PATH=", 5) == 0) {
-          break;
-        }
-    }
-    return (&envp[i][5]);
-}

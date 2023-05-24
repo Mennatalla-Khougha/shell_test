@@ -81,9 +81,9 @@ int _strncmp(const char *str1, const char *str2, size_t n)
  */
 char *_strchr(char *str, char c)
 {
-	int i = 0, len = _strlen(str);
+	int i = 0;
 
-	while (i < len)
+	while (i < _strlen(str))
 	{
 		if (str[i] == c)
 		{
