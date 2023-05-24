@@ -75,6 +75,7 @@ char **get_PWD(para *args)
 	{
 		if (_strncmp(args->envp[i], "PWD", 3) == 0)
 		{
+			printf("|%s|\n", args->envp[i]);
 			pwd = _strdup(args->envp[i]);
 			args->envp[i] = pwd;
 			return (&(args->envp[i]));
