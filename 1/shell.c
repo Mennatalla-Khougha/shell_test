@@ -26,7 +26,7 @@ int _command_(para *args)
 	{
 		for (i = 0; i < args->n_path; i++)
 		{
-			char buffer[1024] = "";
+			char buffer[500] = "";
 
 			_strcat(buffer, path);
 			_strcat(buffer, "/");
