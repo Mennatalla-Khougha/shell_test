@@ -37,13 +37,14 @@ char *_strtok(char *str, const char *delim)
 /**
 * _strdup - return a pointer to space contain a copy of the string given
  * @str: string given.
+ * @args: parameter of type para.
  * Return: a pointer to a duplicate string.
 */
 char *_strdup(para *args, char *str)
 {
 	char *copy;
 	int i, len;
-	
+
 	if (!str)
 		return (NULL);
 	len = _strlen(str);

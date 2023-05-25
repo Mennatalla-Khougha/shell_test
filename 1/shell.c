@@ -1,4 +1,4 @@
- #include "main.h"
+#include "main.h"
 
 /**
  * _command_ - handle the path of the command passed.
@@ -24,6 +24,8 @@ int _command_(para *args)
 	}
 	else
 	{
+		if (!_strcmp(args->line, "env") && _env(args))
+			return (0);
 		for (i = 0; i < args->n_path; i++)
 		{
 			char buffer[500] = "";
@@ -32,11 +34,7 @@ int _command_(para *args)
 			_strcat(buffer, "/");
 			_strcat(buffer, args->line);
 			if (access(buffer, X_OK) == 0)
-			{
-				if (!_env(args))
-					return (_exceve(args, buffer));
-				return (0);
-			}
+				return (_exceve(args, buffer));
 			path += _strlen(path) + 1;
 		}
 	_printf("%s: %i: %s: not found\n", args->shell_name, args->count, args->line);
@@ -125,22 +123,15 @@ if (!_strcmp(args->line, "exit"))
 }
 
 /**
-* token - function to return the splitted number of token
-* @line: the string to be splitted
-* @delim: the delim used to split the string
-* Return:number of token splitted
+* ctrl_c - handle signal
+* @signal: the singal
 */
-int token(char *line, char *delim)
+void ctrl_c(int signal)
 {
-	int n_token = 0;
-	char *str_token = _strtok(line, delim);
-
-	while (str_token)
+	if (signal == SIGINT)
 	{
-		str_token = _strtok(NULL, delim);
-		n_token++;
+		write(1, "\n=> ", 4);
 	}
-	return (n_token);
 }
 
 /**
@@ -155,9 +146,8 @@ int main(int argc, char **argv, char **envp)
 	para args;
 	int  arrow = 1, semi = 0;
 
-	args.line = NULL;
+	args.line = NULL, args.path = NULL;
 	args.envp = envp;
-	args.path = NULL;
 	args.pwd = NULL;
 	args.old_pwd = NULL;
 	args.path = _strdup(&args, _get_env(envp, "PATH", 4));
@@ -181,9 +171,10 @@ int main(int argc, char **argv, char **envp)
 	}
 while (1)
 {
-	args.count++;
 	if (isatty(STDIN_FILENO) && arrow && !args.file)
 		write(1, "=> ", 3);
+	signal(SIGINT, ctrl_c);
+	args.count++;
 	arrow = input(&args, arrow, &semi);
 	if (handle_input(&args))
 		continue;
