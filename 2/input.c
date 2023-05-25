@@ -4,22 +4,32 @@
 /**
 * input - determine if we start new line in the shell with an arrow.
 * @args: parameter of type para
+* @arrow: 1 if stdin
+* @semi:  0 or 1
 * Return: 0, 1
 */
-int input(para *args)
+int input(para *args, int arrow, int *semi)
 {
 	ssize_t read;
 
 	read = _getline(args);
 	if (read == -1)
 	{
+		if (isatty(STDIN_FILENO) && arrow && !args->file)
+			write(1, "\n", 1);
 		close(args->file);
-		free(args->line);
-		free(args->path);
-		free(*(args->pwd));
-		free(args->old_pwd);
+		if (args->line)
+			free(args->line);
+		if (args->path)
+			free(args->path);
+		if (args->pwd)
+			free(*(args->pwd));
+		if (args->old_pwd)
+			free(args->old_pwd);
 		exit(args->status);
 	}
+	if (*semi)
+		args->count--;
 	if (args->line[read - 1] == '\n')
 	{
 		args->line[read - 1] = '\0';
@@ -27,8 +37,10 @@ int input(para *args)
 	if (args->line[read - 1] == ';')
 	{
 		args->line[read - 1] = '\0';
+		*semi = 1;
 		return (0);
 	}
+	*semi = 0;
 	return (1);
 }
 
@@ -42,7 +54,7 @@ ssize_t _getline(para *args)
 	size_t i = 0;
 	ssize_t read_line;
 	char *buffer;
-	int buffer_size = 8;
+	int buffer_size = 10240;
 
 	if (&(args->line) == NULL)
 		return (-1);
@@ -55,9 +67,9 @@ ssize_t _getline(para *args)
 	while ((read_line = read(args->file, buffer + i, 1)) > 0)
 	{
 		i++;
+		buffer = handle_realloc(args, buffer, &buffer_size, 2048, i);
 		if (buffer[i - 1] == '\n' || buffer[i - 1] == ';')
 			break;
-		buffer = handle_realloc(args, buffer, &buffer_size, 8, i);
 	}
 	if (read_line < 0 || (!read_line && !i))
 	{
@@ -73,11 +85,13 @@ ssize_t _getline(para *args)
 /**
  * handle_input - determine if line contain $ or # and act accordingly.
  * @args: parameter of type para..
+ *
+ * Return: 1 if the string is empty
 */
 int handle_input(para *args)
 {
 char *buffer, *dollar, *start, *hash = _strchr(args->line, '#');
-int buffer_size = 1024;
+int buffer_size = 10240;
 
 if (hash && ((hash != args->line && *(hash - 1) == ' ') || hash == args->line))
 	*hash = '\0';
@@ -98,6 +112,7 @@ buffer = handle_realloc(args, buffer, &buffer_size,
 128, _strlen(buffer) + _strlen(start));
 _strcat(buffer, start);
 space(&buffer, args);
+handle_dots(&buffer, args);
 free(args->line);
 args->line = buffer;
 return (buffer[0] == '\0');

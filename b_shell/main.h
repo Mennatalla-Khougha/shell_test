@@ -79,5 +79,6 @@ void change_pwd(para *args);
 void free_exit(para *args);
 char *_malloc(para *args, int size);
 char *get_path(char **envp);
+char *_strcpy(char *dest, char *src);
 
 #endif

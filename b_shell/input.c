@@ -42,7 +42,7 @@ ssize_t _getline(para *args)
 	size_t i = 0;
 	ssize_t read_line;
 	char *buffer;
-	int buffer_size = 8;
+	int buffer_size = 16;
 
 	if (&(args->line) == NULL)
 		return (-1);
@@ -55,16 +55,16 @@ ssize_t _getline(para *args)
 	while ((read_line = read(args->file, buffer + i, 1)) > 0)
 	{
 		i++;
+		buffer = handle_realloc(args, buffer, &buffer_size, 8, i);
 		if (buffer[i - 1] == '\n' || buffer[i - 1] == ';')
 			break;
-		buffer = handle_realloc(args, buffer, &buffer_size, 8, i);
 	}
 	if (read_line < 0 || (!read_line && !i))
 	{
 		free(buffer);
 		return (-1);
 	}
-	if (read_line != 8)
+	if (i < buffer_size)
 		buffer[i] = '\0';
 	args->line = buffer;
 	return (i);

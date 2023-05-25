@@ -33,7 +33,7 @@ int cd(para *args)
 		else
 		{
 			free(args->old_pwd);
-			args->old_pwd = _strdup(&((*(args->pwd))[4]));
+			args->old_pwd = _strdup(args, &((*(args->pwd))[4]));
 			if (!args->old_pwd)
 				free_exit(args);
 			change_pwd(args);
@@ -75,8 +75,7 @@ char **get_PWD(para *args)
 	{
 		if (_strncmp(args->envp[i], "PWD", 3) == 0)
 		{
-			printf("|%s|\n", args->envp[i]);
-			pwd = _strdup(args->envp[i]);
+			pwd = _strdup(args, args->envp[i]);
 			args->envp[i] = pwd;
 			return (&(args->envp[i]));
 		}
@@ -94,7 +93,7 @@ void free_exit(para *args)
 		free(args->line);
 	if (args->path)
 		free(args->path);
-	if (*(args->pwd))
+	if (args->pwd)
 		free(*(args->pwd));
 	if (args->old_pwd)
 		free(args->old_pwd);
@@ -104,7 +103,7 @@ void free_exit(para *args)
 /**
  * _malloc - handling malloc and freeing exit if malloc failed.
  * @args: parameter of type para
- * @size: the size to be malloced
+ * @size: the size to be maloced
  * Return: the buffer.
  */
 char *_malloc(para *args, int size)
